@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
             throw new UserFieldsNullException("Todos os campos estão nulos. Pelo menos um campo deve ser preenchido.");
         }
 
+        if(existsUserByEmail(updatedUser.getEmail())) throw new UserEmailAlreadyExistsException("Esse e-mail já existe.");
+
         User user = getUserById(id);
 
         if (updatedUser.getName() != null) user.setName(updatedUser.getName());
