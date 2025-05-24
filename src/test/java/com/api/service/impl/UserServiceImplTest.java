@@ -2,6 +2,7 @@ package com.api.service.impl;
 
 import com.api.entity.User;
 import com.api.exception.user.UserEmailAlreadyExistsException;
+import com.api.exception.user.UserFieldsNullException;
 import com.api.exception.user.UserNotFoundException;
 import com.api.repository.UserRepository;
 import com.api.service.UserService;
@@ -29,6 +30,16 @@ class UserServiceImplTest {
     }
 
     @Test
+    void getUsers_ShouldReturnEmptyList_WhenNoUsersExist() {
+        when(userRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<User> result = userService.getUsers();
+
+        assertTrue(result.isEmpty());
+        verify(userRepository).findAll();
+    }
+
+    @Test
     void getUsers_ShouldReturnUsers_WhenUsersExist() {
         User user = new User(UUID.randomUUID(), "Test", "test@gmail.com", "12345678");
         List<User> users = new ArrayList<>();
@@ -43,36 +54,27 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUsers_ShouldReturnEmptyList_WhenNoUsersExist() {
-        when(userRepository.findAll()).thenReturn(Collections.emptyList());
-
-        List<User> result = userService.getUsers();
-
-        assertTrue(result.isEmpty());
-        verify(userRepository).findAll();
-    }
-
-    @Test
-    void getUserById_ShouldReturnUser_WhenUserExists() {
-        UUID id = UUID.randomUUID();
-        User user = new User(id, "Test", "test@gmail.com", "12345678");
-
-        when(userRepository.findById(id)).thenReturn(Optional.of(user));
-
-        User result = userService.getUserById(id);
-
-        assertEquals(user, result);
-        verify(userRepository).findById(id);
-    }
-
-    @Test
     void getUserById_ShouldThrowUserNotFoundException_WhenUserDoesNotExist() {
         UUID id = UUID.randomUUID();
 
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getUserById(id));
+        Exception exception = assertThrows(UserNotFoundException.class, () -> userService.getUserById(id));
+
+        assertEquals("Usuário não encontrado.", exception.getMessage());
         verify(userRepository).findById(id);
+    }
+
+    @Test
+    void getUserById_ShouldReturnUser_WhenUserExists() {
+        User user = new User(UUID.randomUUID(), "Test", "test@gmail.com", "12345678");
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+
+        User result = userService.getUserById(user.getId());
+
+        assertEquals(user, result);
+        verify(userRepository).findById(user.getId());
     }
 
     @Test
@@ -81,7 +83,9 @@ class UserServiceImplTest {
 
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
 
-        assertThrows(UserEmailAlreadyExistsException.class, () -> userService.saveUser(user));
+        Exception exception = assertThrows(UserEmailAlreadyExistsException.class, () -> userService.saveUser(user));
+
+        assertEquals("Esse e-mail já existe.", exception.getMessage());
         verify(userRepository).existsByEmail(user.getEmail());
     }
 
@@ -95,36 +99,58 @@ class UserServiceImplTest {
         User result = userService.saveUser(user);
 
         assertEquals(user, result);
+
+        verify(userRepository).existsByEmail(user.getEmail());
         verify(userRepository).save(user);
+    }
+
+    @Test
+    void updateUser_ShouldThrowUserFieldsNullException_WhenAllUserFieldsAreNull() {
+        User user = new User();
+        user.setName(null);
+        user.setEmail(null);
+
+        Exception exception = assertThrows(UserFieldsNullException.class, () -> userService.updateUser(user.getId(), user));
+
+        assertEquals("Todos os campos estão nulos. Pelo menos um campo deve ser preenchido.", exception.getMessage());
     }
 
     @Test
     void updateUser_ShouldThrowUserNotFoundException_WhenUserDoesNotExist() {
         User user = new User();
+        user.setId(UUID.randomUUID());
         user.setName("Test");
         user.setEmail("test@gmail.com");
 
-        when(userRepository.findById(user.getId())).thenThrow(new UserNotFoundException("Usuário não encontrado."));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.updateUser(user.getId(), user));
+        Exception exception = assertThrows(UserNotFoundException.class, () -> userService.updateUser(user.getId(), user));
+
+        assertEquals("Usuário não encontrado.", exception.getMessage());
         verify(userRepository).findById(user.getId());
     }
 
     @Test
     void updateUser_ShouldThrowUserEmailAlreadyExistsException_WhenEmailAlreadyExists() {
         User user = new User();
+        user.setId(UUID.randomUUID());
         user.setName("Test");
         user.setEmail("test@gmail.com");
 
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
 
-        assertThrows(UserEmailAlreadyExistsException.class, () -> userService.updateUser(user.getId(), user));
+        Exception exception = assertThrows(UserEmailAlreadyExistsException.class, () -> userService.updateUser(user.getId(), user));
+
+        assertEquals("Esse e-mail já existe.", exception.getMessage());
         verify(userRepository).existsByEmail(user.getEmail());
     }
 
     @Test
     void updateUser_ShouldUpdateUser_WhenUserExists() {
-        User user = new User(UUID.randomUUID(), "Test", "test@gmail.com", "12345678");
+        User user = new User();
+        user.setId(UUID.randomUUID());
+        user.setName("Test");
+        user.setEmail("test@gmail.com");
 
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(false);
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
@@ -143,9 +169,11 @@ class UserServiceImplTest {
     void deleteUser_ShouldThrowUserNotFoundException_WhenUserDoesNotExist() {
         UUID id = UUID.randomUUID();
 
-        when(userRepository.findById(id)).thenThrow(new UserNotFoundException("Usuário não encontrado."));
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getUserById(id));
+        Exception exception = assertThrows(UserNotFoundException.class, () -> userService.getUserById(id));
+
+        assertEquals("Usuário não encontrado.", exception.getMessage());
         verify(userRepository).findById(id);
     }
 
