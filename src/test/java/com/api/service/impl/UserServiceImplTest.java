@@ -22,7 +22,6 @@ import static org.mockito.Mockito.*;
 class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
-
     private UserService userService;
 
     @BeforeEach
