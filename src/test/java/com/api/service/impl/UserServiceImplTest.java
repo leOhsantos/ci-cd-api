@@ -5,7 +5,7 @@ import com.api.domain.model.User;
 import com.api.domain.exception.UserEmailAlreadyExistsException;
 import com.api.domain.exception.UserFieldsNullException;
 import com.api.domain.exception.UserNotFoundException;
-import com.api.repository.jpa.UserJpaRepository;
+import com.api.output.repository.jpa.UserJpaRepository;
 import com.api.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
