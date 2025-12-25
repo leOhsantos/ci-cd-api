@@ -1,4 +1,4 @@
-package com.api.exception.user;
+package com.api.domain.exception;
 
 public class UserFieldsNullException extends RuntimeException {
     public UserFieldsNullException(String message) {

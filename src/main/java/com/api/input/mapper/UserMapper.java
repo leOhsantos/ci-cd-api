@@ -1,8 +1,14 @@
-package com.api.dto.user;
+package com.api.input.mapper;
 
-import com.api.entity.User;
+import com.api.domain.model.User;
+import com.api.input.dto.user.UserRequestDto;
+import com.api.input.dto.user.UserResponseDto;
+import com.api.input.dto.user.UserUpdateRequestDto;
 
 public class UserMapper {
+    private UserMapper() {
+    }
+
     public static User toUser(UserRequestDto dto) {
         if (dto == null) return null;
 

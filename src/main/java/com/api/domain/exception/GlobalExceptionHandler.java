@@ -1,8 +1,5 @@
-package com.api.exception;
+package com.api.domain.exception;
 
-import com.api.exception.user.UserFieldsNullException;
-import com.api.exception.user.UserEmailAlreadyExistsException;
-import com.api.exception.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), error.getDefaultMessage());
-        });
-
+        ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
         return buildExceptionResponse(HttpStatus.BAD_REQUEST, errors.toString());
     }
 

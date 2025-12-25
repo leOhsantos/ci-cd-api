@@ -1,7 +1,5 @@
-package com.api.dto.user;
+package com.api.input.dto.user;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserRequestDto {
-    @NotBlank
+public class UserUpdateRequestDto {
     private String name;
-    @Email
     private String email;
-    @NotBlank
-    private String password;
 }

@@ -1,4 +1,4 @@
-package com.api.exception.user;
+package com.api.domain.exception;
 
 public class UserEmailAlreadyExistsException extends RuntimeException {
     public UserEmailAlreadyExistsException(String message) {

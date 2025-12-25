@@ -1,4 +1,4 @@
-package com.api.exception;
+package com.api.domain.exception;
 
 import lombok.Getter;
 

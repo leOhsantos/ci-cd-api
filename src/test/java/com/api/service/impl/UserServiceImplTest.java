@@ -1,11 +1,12 @@
 package com.api.service.impl;
 
-import com.api.entity.User;
-import com.api.exception.user.UserEmailAlreadyExistsException;
-import com.api.exception.user.UserFieldsNullException;
-import com.api.exception.user.UserNotFoundException;
-import com.api.repository.UserRepository;
-import com.api.service.UserService;
+import com.api.domain.usecase.UserServiceImpl;
+import com.api.domain.model.User;
+import com.api.domain.exception.UserEmailAlreadyExistsException;
+import com.api.domain.exception.UserFieldsNullException;
+import com.api.domain.exception.UserNotFoundException;
+import com.api.repository.jpa.UserJpaRepository;
+import com.api.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
     @Mock
-    private UserRepository userRepository;
+    private UserJpaRepository userRepository;
 
-    private UserService userService;
+    private UserRepository userService;
 
     @BeforeEach
     void setUp() {

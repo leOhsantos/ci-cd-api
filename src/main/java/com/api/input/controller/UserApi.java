@@ -1,9 +1,9 @@
-package com.api.controller;
+package com.api.input.controller;
 
-import com.api.dto.user.UserRequestDto;
-import com.api.dto.user.UserResponseDto;
-import com.api.dto.user.UserUpdateRequestDto;
-import com.api.exception.ExceptionResponse;
+import com.api.input.dto.user.UserRequestDto;
+import com.api.input.dto.user.UserResponseDto;
+import com.api.input.dto.user.UserUpdateRequestDto;
+import com.api.domain.exception.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @RequestMapping("/users")
 @Tag(name = "User")
-public interface UserController {
+public interface UserApi {
     @Operation(summary = "Consulta todos os usuários")
     @ApiResponses(value = {
             @ApiResponse(
