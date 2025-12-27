@@ -4,11 +4,11 @@ import com.api.domain.exception.UserEmailAlreadyExistsException;
 import com.api.domain.model.User;
 import com.api.domain.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SaveUser {
     private final UserRepository userRepository;
 

@@ -5,13 +5,13 @@ import com.api.domain.exception.UserFieldsNullException;
 import com.api.domain.model.User;
 import com.api.domain.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UpdateUser {
     private final UserRepository userRepository;
     private final GetUserById getUserById;

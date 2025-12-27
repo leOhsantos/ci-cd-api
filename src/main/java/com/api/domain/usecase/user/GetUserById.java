@@ -3,14 +3,14 @@ package com.api.domain.usecase.user;
 import com.api.domain.exception.UserNotFoundException;
 import com.api.domain.model.User;
 import com.api.domain.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GetUserById {
     private final UserRepository userRepository;
 

@@ -4,12 +4,11 @@ import com.api.domain.model.User;
 import com.api.input.dto.user.UserRequestDto;
 import com.api.input.dto.user.UserResponseDto;
 import com.api.input.dto.user.UserUpdateRequestDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper {
-    private UserMapper() {
-    }
-
-    public static User toUser(UserRequestDto dto) {
+    public User toDomain(UserRequestDto dto) {
         if (dto == null) return null;
 
         return User.builder()
@@ -19,7 +18,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static User toUser(UserUpdateRequestDto dto) {
+    public User toDomain(UserUpdateRequestDto dto) {
         if (dto == null) return null;
 
         return User.builder()
@@ -28,7 +27,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static UserResponseDto toUserResponseDto(User user) {
+    public UserResponseDto toResponse(User user) {
         if (user == null) return null;
 
         return UserResponseDto.builder()
